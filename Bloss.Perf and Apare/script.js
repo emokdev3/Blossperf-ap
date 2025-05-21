@@ -1,0 +1,294 @@
+// Mobile Navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const navIcons = document.querySelector('.nav-icons');
+
+    // Create mobile menu structure if it doesn't exist
+    let mobileMenu = document.querySelector('.mobile-menu');
+    if (!mobileMenu) {
+        mobileMenu = document.createElement('div');
+        mobileMenu.className = 'mobile-menu';
+        // Create a container for the cloned links and icons
+        const menuContent = document.createElement('div');
+        menuContent.className = 'mobile-menu-content';
+        mobileMenu.appendChild(menuContent);
+        document.body.appendChild(mobileMenu);
+    }
+
+    // Get the content container for the mobile menu
+    const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+
+    // Clear previous content if any
+    menuContent.innerHTML = '';
+
+    // Clone and add navigation links and icons
+    const linksClone = navLinks.cloneNode(true);
+    const iconsClone = navIcons.cloneNode(true);
+    
+    // Remove display: none from cloned elements that might have it from desktop view
+    linksClone.style.display = '';
+    iconsClone.style.display = '';
+
+    menuContent.appendChild(linksClone);
+    menuContent.appendChild(iconsClone);
+
+    // Toggle mobile menu
+    hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        mobileMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+    });
+
+    // Close mobile menu when clicking on a link inside it
+    const mobileLinks = menuContent.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Add a small delay to allow smooth scrolling before closing menu
+            setTimeout(() => {
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }, 300);
+        });
+    });
+
+    // Prevent menu from closing when clicking inside its content area
+    menuContent.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+});
+
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // Close mobile menu if open
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.remove();
+                hamburger.classList.remove('active');
+            }
+        }
+    });
+});
+
+// Add to cart functionality
+const addToCartButtons = document.querySelectorAll('.product-card button');
+addToCartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const product = button.closest('.product-card');
+        const productName = product.querySelector('h3').textContent;
+        const productPrice = product.querySelector('.price').textContent;
+        
+        // Show notification
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = `${productName} added to cart!`;
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    });
+});
+
+// Newsletter form submission
+const newsletterForm = document.querySelector('.newsletter-form');
+newsletterForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = newsletterForm.querySelector('input[type="email"]').value;
+    
+    // Show success message
+    const successMessage = document.createElement('div');
+    successMessage.className = 'success-message';
+    successMessage.textContent = 'Thank you for subscribing!';
+    newsletterForm.appendChild(successMessage);
+    
+    // Clear form
+    newsletterForm.reset();
+    
+    // Remove success message after 3 seconds
+    setTimeout(() => {
+        successMessage.remove();
+    }, 3000);
+});
+
+// Add CSS for notifications and mobile menu
+const style = document.createElement('style');
+style.textContent = `
+    .mobile-menu {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        padding: 2rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+    
+    .mobile-menu a {
+        display: block;
+        padding: 1rem 0;
+        text-decoration: none;
+        color: #333;
+    }
+    
+    .mobile-menu i {
+        display: block;
+        padding: 1rem 0;
+        color: #333;
+    }
+    
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #DC143C;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 5px;
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .success-message {
+        color: #28a745;
+        margin-top: 1rem;
+        text-align: center;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+`;
+document.head.appendChild(style);
+
+// Scroll to top button
+const scrollButton = document.createElement('button');
+scrollButton.innerHTML = '↑';
+scrollButton.className = 'scroll-top';
+document.body.appendChild(scrollButton);
+
+// Add CSS for scroll to top button
+const scrollButtonStyle = document.createElement('style');
+scrollButtonStyle.textContent = `
+    .scroll-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background-color: #DC143C;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        font-size: 1.5rem;
+        z-index: 1000;
+    }
+    
+    .scroll-top:hover {
+        background-color: #b01030;
+    }
+`;
+document.head.appendChild(scrollButtonStyle);
+
+// Show/hide scroll to top button
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        scrollButton.style.display = 'block';
+    } else {
+        scrollButton.style.display = 'none';
+    }
+});
+
+// Scroll to top functionality
+scrollButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Theme Switcher
+document.addEventListener('DOMContentLoaded', function() {
+    const themeOptions = document.querySelectorAll('.theme-option');
+    const body = document.body;
+    const modeToggle = document.getElementById('modeToggle');
+    const modeIcon = modeToggle.querySelector('i');
+
+    // Function to set theme
+    function setTheme(theme, isDark = false) {
+        const themeName = isDark ? `${theme}-dark` : theme;
+        body.setAttribute('data-theme', themeName);
+        localStorage.setItem('selectedTheme', theme);
+        localStorage.setItem('isDarkMode', isDark);
+        
+        // Update active state
+        themeOptions.forEach(option => {
+            option.classList.remove('active');
+            if (option.getAttribute('data-theme') === theme) {
+                option.classList.add('active');
+            }
+        });
+
+        // Update mode icon
+        modeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    // Load saved theme and mode
+    const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+    const isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+    setTheme(savedTheme, isDarkMode);
+
+    // Add click event listeners to theme options
+    themeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const theme = option.getAttribute('data-theme');
+            const isDark = localStorage.getItem('isDarkMode') === 'true';
+            setTheme(theme, isDark);
+        });
+    });
+
+    // Add click event listener to mode toggle
+    modeToggle.addEventListener('click', () => {
+        const currentTheme = body.getAttribute('data-theme').replace('-dark', '');
+        const isDark = localStorage.getItem('isDarkMode') === 'true';
+        setTheme(currentTheme, !isDark);
+    });
+}); 
