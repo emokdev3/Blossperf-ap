@@ -4,38 +4,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelector('.nav-links');
     const navIcons = document.querySelector('.nav-icons');
 
-    // Create mobile menu structure if it doesn't exist
-    let mobileMenu = document.querySelector('.mobile-menu');
-    if (!mobileMenu) {
-        mobileMenu = document.createElement('div');
-        mobileMenu.className = 'mobile-menu';
-        // Create a container for the cloned links and icons
-        const menuContent = document.createElement('div');
-        menuContent.className = 'mobile-menu-content';
-        mobileMenu.appendChild(menuContent);
-        document.body.appendChild(mobileMenu);
-    }
+    // Create mobile menu
+    const mobileMenu = document.createElement('div');
+    mobileMenu.className = 'mobile-menu';
+    const menuContent = document.createElement('div');
+    menuContent.className = 'mobile-menu-content';
+    mobileMenu.appendChild(menuContent);
+    document.body.appendChild(mobileMenu);
 
-    // Get the content container for the mobile menu
-    const menuContent = mobileMenu.querySelector('.mobile-menu-content');
-
-    // Clear previous content if any
-    menuContent.innerHTML = '';
-
-    // Clone and add navigation links and icons
+    // Clone navigation elements
     const linksClone = navLinks.cloneNode(true);
     const iconsClone = navIcons.cloneNode(true);
-    
-    // Remove display: none from cloned elements that might have it from desktop view
-    linksClone.style.display = '';
-    iconsClone.style.display = '';
-
     menuContent.appendChild(linksClone);
     menuContent.appendChild(iconsClone);
 
     // Toggle mobile menu
-    hamburger.addEventListener('click', function(e) {
-        e.stopPropagation();
+    hamburger.addEventListener('click', function() {
         mobileMenu.classList.toggle('active');
         hamburger.classList.toggle('active');
     });
@@ -48,21 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Close mobile menu when clicking on a link inside it
+    // Close mobile menu when clicking a link
     const mobileLinks = menuContent.querySelectorAll('a');
     mobileLinks.forEach(link => {
         link.addEventListener('click', function() {
-            // Add a small delay to allow smooth scrolling before closing menu
-            setTimeout(() => {
-                mobileMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            }, 300);
+            mobileMenu.classList.remove('active');
+            hamburger.classList.remove('active');
         });
-    });
-
-    // Prevent menu from closing when clicking inside its content area
-    menuContent.addEventListener('click', function(e) {
-        e.stopPropagation();
     });
 });
 

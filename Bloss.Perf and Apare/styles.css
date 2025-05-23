@@ -327,63 +327,66 @@ footer {
 
 /* Mobile Menu Styles */
 .mobile-menu {
-    /* Base styles for mobile menu - hidden by default */
     position: fixed;
-    top: 70px; /* Position below the fixed navbar */
+    top: 70px;
     left: 0;
     width: 100%;
-    height: calc(100% - 70px); /* Make menu take remaining viewport height */
+    height: calc(100vh - 70px);
     background-color: var(--card-background);
-    box-shadow: 0 2px 5px var(--shadow-color);
-    z-index: 998; /* Ensure it's below the navbar but above content */
-    display: none; /* Hidden by default */
-    flex-direction: column; /* Keep flex for internal layout */
-    overflow-y: auto; /* Allow scrolling if menu content exceeds height */
-    padding: 1rem 0; /* Add padding */
-    /* Remove opacity transitions from base state */
+    z-index: 999;
+    display: none;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 .mobile-menu.active {
-    /* Styles when menu is active */
-    display: flex; /* Show as flex when active */
-    /* Remove opacity=1 here, handled by display */
+    display: block;
 }
 
 .mobile-menu-content {
-    width: 100%;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .mobile-menu-content .nav-links,
 .mobile-menu-content .nav-icons {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 0;
+    gap: 15px;
 }
 
-.mobile-menu-content .nav-links a,
-.mobile-menu-content .nav-icons i {
-    display: block;
-    padding: 1rem;
-    text-decoration: none;
+.mobile-menu-content a,
+.mobile-menu-content i {
     color: var(--text-color);
-    border-bottom: 1px solid var(--border-color);
+    text-decoration: none;
     font-size: 1.1rem;
-    text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    width: 100%;
+    padding: 10px 0;
 }
 
-.mobile-menu-content .nav-links a:last-child,
-.mobile-menu-content .nav-icons i:last-child {
-    border-bottom: none;
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    padding: 5px;
 }
 
-.mobile-menu-content .nav-links a:hover,
-.mobile-menu-content .nav-icons i:hover {
-    background-color: var(--background-color);
-    color: var(--primary-color);
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--nav-text);
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-links, .nav-icons {
+        display: none;
+    }
 }
 
 /* Responsive Design */
@@ -734,7 +737,7 @@ footer {
     z-index: 1001;
 }
 
-.mode-toggle button {
+.theme-switcher button {
     background: none;
     border: none;
     color: var(--nav-text);
@@ -743,10 +746,16 @@ footer {
     padding: 8px;
     border-radius: 50%;
     transition: all 0.3s ease;
+    background-color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.mode-toggle button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.theme-switcher button:hover {
+    background-color: var(--primary-dark);
 }
 
 /* Dark Mode Styles */
@@ -761,6 +770,6 @@ footer {
     --input-text: #ffffff;
 }
 
-[data-theme="dark"] .mode-toggle button i {
+[data-theme="dark"] .theme-switcher button i {
     color: #ffd700;
 } 
