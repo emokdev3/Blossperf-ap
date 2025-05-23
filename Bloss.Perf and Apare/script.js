@@ -245,50 +245,31 @@ scrollButton.addEventListener('click', () => {
     });
 });
 
-// Theme Switcher
+// Dark/Light Mode Toggle
 document.addEventListener('DOMContentLoaded', function() {
-    const themeOptions = document.querySelectorAll('.theme-option');
-    const body = document.body;
     const modeToggle = document.getElementById('modeToggle');
-    const modeIcon = modeToggle.querySelector('i');
-
-    // Function to set theme
-    function setTheme(theme, isDark = false) {
-        const themeName = isDark ? `${theme}-dark` : theme;
-        body.setAttribute('data-theme', themeName);
-        localStorage.setItem('selectedTheme', theme);
-        localStorage.setItem('isDarkMode', isDark);
-        
-        // Update active state
-        themeOptions.forEach(option => {
-            option.classList.remove('active');
-            if (option.getAttribute('data-theme') === theme) {
-                option.classList.add('active');
-            }
-        });
-
-        // Update mode icon
-        modeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    const icon = modeToggle.querySelector('i');
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
     }
 
-    // Load saved theme and mode
-    const savedTheme = localStorage.getItem('selectedTheme') || 'default';
-    const isDarkMode = localStorage.getItem('isDarkMode') === 'true';
-    setTheme(savedTheme, isDarkMode);
-
-    // Add click event listeners to theme options
-    themeOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            const theme = option.getAttribute('data-theme');
-            const isDark = localStorage.getItem('isDarkMode') === 'true';
-            setTheme(theme, isDark);
-        });
-    });
-
-    // Add click event listener to mode toggle
-    modeToggle.addEventListener('click', () => {
-        const currentTheme = body.getAttribute('data-theme').replace('-dark', '');
-        const isDark = localStorage.getItem('isDarkMode') === 'true';
-        setTheme(currentTheme, !isDark);
+    modeToggle.addEventListener('click', function() {
+        const currentTheme = document.body.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            document.body.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        } else {
+            document.body.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
     });
 }); 

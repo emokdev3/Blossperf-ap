@@ -31,7 +31,6 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
-    transition: all 0.3s ease;
 }
 
 /* Navigation */
@@ -725,4 +724,43 @@ footer {
 /* Success Message */
 .success-message {
     color: var(--primary-color);
+}
+
+/* Theme Switcher */
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+}
+
+.mode-toggle button {
+    background: none;
+    border: none;
+    color: var(--nav-text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.mode-toggle button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] {
+    --text-color: #ffffff;
+    --background-color: #1a1a1a;
+    --card-background: #2d2d2d;
+    --nav-text: #ffffff;
+    --footer-bg: #1a1a1a;
+    --footer-text: #ffffff;
+    --input-bg: #2d2d2d;
+    --input-text: #ffffff;
+}
+
+[data-theme="dark"] .mode-toggle button i {
+    color: #ffd700;
 } 
