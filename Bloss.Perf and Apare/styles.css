@@ -298,12 +298,25 @@ footer {
 }
 
 .social-icons {
+    display: flex;
+    gap: 1rem;
     margin-top: 1rem;
 }
 
 .social-icons i {
-    margin-right: 1rem;
+    font-size: 1.5rem;
+    color: var(--white);
+    transition: all 0.3s ease;
     cursor: pointer;
+}
+
+.social-icons i:hover {
+    transform: translateY(-3px);
+    color: var(--accent-color);
+}
+
+.social-icons a {
+    text-decoration: none;
 }
 
 .footer-bottom {
