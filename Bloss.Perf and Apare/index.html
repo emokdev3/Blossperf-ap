@@ -16,6 +16,16 @@
         <div class="logo-container">
             <div class="logo">Bloss.Perf</div>
         </div>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search products...">
+            <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="cart-container">
+            <button id="cart-button" class="cart-button">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count">0</span>
+            </button>
+        </div>
         <div class="hamburger">
             <span></span>
             <span></span>
@@ -48,7 +58,12 @@
                 <h3>Suit Vest</h3>
                 <p>Elegant and professional vest design</p>
                 <span class="price">₵90</span>
-                <a href="https://wa.me/233555824599?text=Hi, I'm interested in the Suit Vest (₵90)" class="whatsapp-button" target="_blank">Contact on WhatsApp</a>
+                <div class="product-actions">
+                    <button class="wishlist-button" data-product-id="c4">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <a href="https://wa.me/233555824599?text=Hi, I'm interested in the Suit Vest (₵90)" class="whatsapp-button" target="_blank">Contact on WhatsApp</a>
+                </div>
             </div>
             <div class="product-card">
                 <img src="./Assets/c6.jpg" alt="Dress 6">
@@ -344,6 +359,63 @@
             <p>&copy; 2025 Blossandice. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Shopping Cart</h2>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+            <div class="cart-total">
+                <h3>Total: <span id="cart-total-price">₵0</span></h3>
+            </div>
+            <div class="cart-actions">
+                <button id="checkout-button" class="checkout-button">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlist-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>My Wishlist</h2>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="wishlist-items" id="wishlist-items">
+                <!-- Wishlist items will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div id="quick-view-modal" class="modal">
+        <div class="modal-content quick-view-content">
+            <div class="modal-header">
+                <h2 id="quick-view-title"></h2>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="quick-view-body">
+                <div class="quick-view-image">
+                    <img id="quick-view-img" src="" alt="">
+                </div>
+                <div class="quick-view-details">
+                    <p id="quick-view-description"></p>
+                    <span id="quick-view-price" class="price"></span>
+                    <div class="quick-view-actions">
+                        <button class="wishlist-button" id="quick-view-wishlist">
+                            <i class="far fa-heart"></i> Add to Wishlist
+                        </button>
+                        <a href="#" class="whatsapp-button" id="quick-view-whatsapp" target="_blank">Contact on WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

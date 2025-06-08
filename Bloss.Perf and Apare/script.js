@@ -334,4 +334,208 @@ function changePage(section, direction) {
     
     // Smooth scroll to the section
     document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
-} 
+}
+
+// Cart functionality
+let cart = [];
+let wishlist = [];
+
+// DOM Elements
+const cartButton = document.getElementById('cart-button');
+const cartModal = document.getElementById('cart-modal');
+const cartItems = document.getElementById('cart-items');
+const cartCount = document.getElementById('cart-count');
+const cartTotalPrice = document.getElementById('cart-total-price');
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-button');
+const wishlistModal = document.getElementById('wishlist-modal');
+const wishlistItems = document.getElementById('wishlist-items');
+const quickViewModal = document.getElementById('quick-view-modal');
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Cart button click
+    cartButton.addEventListener('click', () => {
+        cartModal.style.display = 'block';
+        updateCartDisplay();
+    });
+
+    // Search functionality
+    searchButton.addEventListener('click', performSearch);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') performSearch();
+    });
+
+    // Close modals when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === cartModal) cartModal.style.display = 'none';
+        if (e.target === wishlistModal) wishlistModal.style.display = 'none';
+        if (e.target === quickViewModal) quickViewModal.style.display = 'none';
+    });
+
+    // Close buttons
+    document.querySelectorAll('.close-button').forEach(button => {
+        button.addEventListener('click', () => {
+            cartModal.style.display = 'none';
+            wishlistModal.style.display = 'none';
+            quickViewModal.style.display = 'none';
+        });
+    });
+
+    // Initialize wishlist buttons
+    document.querySelectorAll('.wishlist-button').forEach(button => {
+        button.addEventListener('click', toggleWishlist);
+    });
+
+    // Initialize quick view
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (!e.target.closest('.wishlist-button') && !e.target.closest('.whatsapp-button')) {
+                showQuickView(card);
+            }
+        });
+    });
+});
+
+// Search functionality
+function performSearch() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const products = document.querySelectorAll('.product-card');
+    
+    products.forEach(product => {
+        const title = product.querySelector('h3').textContent.toLowerCase();
+        const description = product.querySelector('p').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+}
+
+// Cart functionality
+function addToCart(product) {
+    cart.push(product);
+    updateCartCount();
+    updateCartDisplay();
+}
+
+function updateCartCount() {
+    cartCount.textContent = cart.length;
+}
+
+function updateCartDisplay() {
+    cartItems.innerHTML = '';
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.title}">
+            <div class="cart-item-details">
+                <h4>${item.title}</h4>
+                <p>${item.price}</p>
+            </div>
+            <button onclick="removeFromCart(${index})" class="remove-button">×</button>
+        `;
+        cartItems.appendChild(cartItem);
+        total += parseFloat(item.price.replace('₵', ''));
+    });
+
+    cartTotalPrice.textContent = `₵${total.toFixed(2)}`;
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartCount();
+    updateCartDisplay();
+}
+
+// Wishlist functionality
+function toggleWishlist(e) {
+    const button = e.currentTarget;
+    const productId = button.dataset.productId;
+    const product = button.closest('.product-card');
+    
+    if (wishlist.includes(productId)) {
+        wishlist = wishlist.filter(id => id !== productId);
+        button.querySelector('i').className = 'far fa-heart';
+    } else {
+        wishlist.push(productId);
+        button.querySelector('i').className = 'fas fa-heart';
+    }
+    
+    updateWishlistDisplay();
+}
+
+function updateWishlistDisplay() {
+    wishlistItems.innerHTML = '';
+    wishlist.forEach(productId => {
+        const product = document.querySelector(`[data-product-id="${productId}"]`).closest('.product-card');
+        const wishlistItem = document.createElement('div');
+        wishlistItem.className = 'wishlist-item';
+        wishlistItem.innerHTML = `
+            <img src="${product.querySelector('img').src}" alt="${product.querySelector('h3').textContent}">
+            <div class="wishlist-item-details">
+                <h4>${product.querySelector('h3').textContent}</h4>
+                <p>${product.querySelector('.price').textContent}</p>
+            </div>
+            <button onclick="removeFromWishlist('${productId}')" class="remove-button">×</button>
+        `;
+        wishlistItems.appendChild(wishlistItem);
+    });
+}
+
+function removeFromWishlist(productId) {
+    wishlist = wishlist.filter(id => id !== productId);
+    const button = document.querySelector(`[data-product-id="${productId}"]`);
+    button.querySelector('i').className = 'far fa-heart';
+    updateWishlistDisplay();
+}
+
+// Quick View functionality
+function showQuickView(productCard) {
+    const title = productCard.querySelector('h3').textContent;
+    const description = productCard.querySelector('p').textContent;
+    const price = productCard.querySelector('.price').textContent;
+    const image = productCard.querySelector('img').src;
+    const whatsappLink = productCard.querySelector('.whatsapp-button').href;
+
+    document.getElementById('quick-view-title').textContent = title;
+    document.getElementById('quick-view-description').textContent = description;
+    document.getElementById('quick-view-price').textContent = price;
+    document.getElementById('quick-view-img').src = image;
+    document.getElementById('quick-view-whatsapp').href = whatsappLink;
+
+    quickViewModal.style.display = 'block';
+}
+
+// Pagination functionality
+function changePage(section, direction) {
+    const grid = document.getElementById(`${section}-grid`);
+    const currentPage = parseInt(document.getElementById(`${section}-current-page`).textContent);
+    const itemsPerPage = 8;
+    const items = grid.querySelectorAll('.product-card');
+    const totalPages = Math.ceil(items.length / itemsPerPage);
+
+    let newPage = direction === 'next' ? currentPage + 1 : currentPage - 1;
+    if (newPage < 1) newPage = totalPages;
+    if (newPage > totalPages) newPage = 1;
+
+    document.getElementById(`${section}-current-page`).textContent = newPage;
+
+    items.forEach((item, index) => {
+        const start = (newPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        item.style.display = index >= start && index < end ? 'block' : 'none';
+    });
+}
+
+// Initialize pagination
+document.addEventListener('DOMContentLoaded', () => {
+    ['apparel', 'brooches', 'necklaces', 'perfumes'].forEach(section => {
+        changePage(section, 'next');
+    });
+}); 
