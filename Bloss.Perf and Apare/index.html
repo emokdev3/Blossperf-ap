@@ -42,7 +42,7 @@
 
     <section id="apparel" class="products">
         <h2>Ladies Apparel</h2>
-        <div class="product-grid">
+        <div class="product-grid" id="apparel-grid">
             <div class="product-card">
                 <img src="./Assets/C1.jpg" alt="Dress 1">
                 <h3>Elegant Dress</h3>
@@ -191,11 +191,16 @@
                 <a href="https://wa.me/233555824599?text=Hi, I'm interested in the Elegant Collection outfit (₵85)" class="whatsapp-button" target="_blank">Contact on WhatsApp</a>
             </div>
         </div>
+        <div class="pagination" id="apparel-pagination">
+            <button class="pagination-btn" onclick="changePage('apparel', 'prev')">Previous</button>
+            <span class="page-info">Page <span id="apparel-current-page">1</span></span>
+            <button class="pagination-btn" onclick="changePage('apparel', 'next')">Next</button>
+        </div>
     </section>
 
     <section id="brooches" class="products">
         <h2>Our Brooches</h2>
-        <div class="product-grid">
+        <div class="product-grid" id="brooches-grid">
             <div class="product-card">
                 <img src="Assets/new1.jpg" alt="Brooch 1">
                 <h3>Elegant Brooch</h3>
@@ -256,15 +261,20 @@
                 <img src="Assets/new8.jpg" alt="Brooch 8">
                 <h3>Designer Brooch</h3>
                 <p>Premium quality piece</p>
-                <span class="price">₵45</span>
-                <a href="https://wa.me/233555824599?text=Hi, I'm interested in the Designer Brooch (₵45)" class="whatsapp-button" target="_blank">Contact on WhatsApp</a>
+                <span class="price">₵55</span>
+                <a href="https://wa.me/233555824599?text=Hi, I'm interested in the Designer Brooch (₵55)" class="whatsapp-button" target="_blank">Contact on WhatsApp</a>
             </div>
+        </div>
+        <div class="pagination" id="brooches-pagination">
+            <button class="pagination-btn" onclick="changePage('brooches', 'prev')">Previous</button>
+            <span class="page-info">Page <span id="brooches-current-page">1</span></span>
+            <button class="pagination-btn" onclick="changePage('brooches', 'next')">Next</button>
         </div>
     </section>
 
     <section id="necklaces" class="products">
         <h2>Our Necklaces</h2>
-        <div class="product-grid">
+        <div class="product-grid" id="necklaces-grid">
             <div class="product-card">
                 <img src="Assets/N1.jpg" alt="Necklace 1">
                 <h3>Delicate Necklace</h3>
@@ -281,11 +291,16 @@
             </div>
             
         </div>
+        <div class="pagination" id="necklaces-pagination">
+            <button class="pagination-btn" onclick="changePage('necklaces', 'prev')">Previous</button>
+            <span class="page-info">Page <span id="necklaces-current-page">1</span></span>
+            <button class="pagination-btn" onclick="changePage('necklaces', 'next')">Next</button>
+        </div>
     </section>
 
     <section id="perfumes" class="products">
         <h2>Our Perfumes</h2>
-        <div class="product-grid">
+        <div class="product-grid" id="perfumes-grid">
             <div class="product-card">
                 <img src="Assets/Per2.jpg" alt="Perfume 1">
                 <h3>Lattafa</h3>
@@ -334,6 +349,11 @@
                 <p>EAU DE PARFUM vaporisateur e100ml 3.4fl.oz</p>
                 <a href="https://wa.me/233555824599?text=Hi, I'm interested in the 9 PM AFNAN perfume" class="whatsapp-button" target="_blank">Contact on WhatsApp</a>
             </div>
+        </div>
+        <div class="pagination" id="perfumes-pagination">
+            <button class="pagination-btn" onclick="changePage('perfumes', 'prev')">Previous</button>
+            <span class="page-info">Page <span id="perfumes-current-page">1</span></span>
+            <button class="pagination-btn" onclick="changePage('perfumes', 'next')">Next</button>
         </div>
     </section>
 

@@ -264,4 +264,74 @@ window.addEventListener('resize', () => {
     } else {
         navLinks.style.display = 'none';
     }
-}); 
+});
+
+// Pagination configuration
+const itemsPerPage = 6; // Number of items to show per page
+const sections = ['apparel', 'brooches', 'necklaces', 'perfumes'];
+
+// Initialize pagination for all sections
+document.addEventListener('DOMContentLoaded', () => {
+    sections.forEach(section => {
+        initializePagination(section);
+    });
+});
+
+function initializePagination(section) {
+    const grid = document.getElementById(`${section}-grid`);
+    const items = grid.getElementsByClassName('product-card');
+    const totalPages = Math.ceil(items.length / itemsPerPage);
+    
+    // Store total pages in a data attribute
+    grid.dataset.totalPages = totalPages;
+    
+    // Show first page
+    showPage(section, 1);
+}
+
+function showPage(section, pageNumber) {
+    const grid = document.getElementById(`${section}-grid`);
+    const items = grid.getElementsByClassName('product-card');
+    const totalPages = parseInt(grid.dataset.totalPages);
+    
+    // Update current page display
+    document.getElementById(`${section}-current-page`).textContent = pageNumber;
+    
+    // Hide all items
+    Array.from(items).forEach(item => {
+        item.style.display = 'none';
+    });
+    
+    // Show items for current page
+    const start = (pageNumber - 1) * itemsPerPage;
+    const end = Math.min(start + itemsPerPage, items.length);
+    
+    for (let i = start; i < end; i++) {
+        items[i].style.display = 'block';
+    }
+    
+    // Update button states
+    const prevBtn = document.querySelector(`#${section}-pagination .pagination-btn:first-child`);
+    const nextBtn = document.querySelector(`#${section}-pagination .pagination-btn:last-child`);
+    
+    prevBtn.disabled = pageNumber === 1;
+    nextBtn.disabled = pageNumber === totalPages;
+}
+
+function changePage(section, direction) {
+    const grid = document.getElementById(`${section}-grid`);
+    const currentPage = parseInt(document.getElementById(`${section}-current-page`).textContent);
+    const totalPages = parseInt(grid.dataset.totalPages);
+    
+    let newPage = currentPage;
+    if (direction === 'next' && currentPage < totalPages) {
+        newPage = currentPage + 1;
+    } else if (direction === 'prev' && currentPage > 1) {
+        newPage = currentPage - 1;
+    }
+    
+    showPage(section, newPage);
+    
+    // Smooth scroll to the section
+    document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
+} 
